@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#251d32" />
+<meta name="description" content="胆小鬼俱乐部：双人在线心理博弈游戏。迈出一步，还是及时收手？" />
+<title>胆小鬼俱乐部 | EDGE CLUB</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<div class="noise" aria-hidden="true"></div>
+<div class="app-shell">
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="胆小鬼俱乐部 首页"><span class="brand-mark">E<span>✳</span></span><span class="brand-text">EDGE<br><b>CLUB</b></span></a>
+    <div class="topbar-right"><span class="tiny-text">两个人 · 一场胆量测试</span><span class="connection"><i id="connectionDot"></i><span id="connectionText">连接中</span></span></div>
+  </header>
+
+  <main id="homeView" class="home-view">
+    <div class="home-copy">
+      <div class="eyebrow"><span class="dot-mini"></span> TWO-PLAYER ONLINE GAME <span class="slash">/</span> NO. 004</div>
+      <h1>谁才是<br><em>胆小鬼<span class="question">？</span></em></h1>
+      <p class="hero-description">有些人还在往前冲，<br>有些人已经把分数装进了口袋。</p>
+      <div class="rule-tags"><span>01 · 暗中选择</span><span>02 · 小心悬崖</span><span>03 · 五局定胜负</span></div>
+      <section class="entry-panel" aria-labelledby="entryTitle">
+        <div class="entry-title-row"><div><span class="number-label">YOUR TURN</span><h2 id="entryTitle">邀请一个勇敢的人。</h2></div><span class="entry-stamp">✳</span></div>
+        <label class="field-label" for="nameInput">你的游戏昵称</label>
+        <input id="nameInput" maxlength="12" placeholder="给自己起个名字" autocomplete="nickname" spellcheck="false" />
+        <div class="entry-tabs" role="tablist"><button class="entry-tab active" data-tab="create" id="tabCreate" role="tab" aria-selected="true">创建房间</button><button class="entry-tab" data-tab="join" id="tabJoin" role="tab" aria-selected="false">加入朋友的房间</button></div>
+        <div id="joinField" hidden><label class="field-label" for="roomInput">6位房间码</label><input id="roomInput" maxlength="6" placeholder="例如 ABC123" autocapitalize="characters" spellcheck="false" /></div>
+        <button class="primary-button" id="entryButton" data-act="entry">创建房间 <span>↗</span></button>
+        <p class="form-note" id="entryNote">无需下载、无需注册，发链接就能一起玩。</p>
+      </section>
+    </div>
+    <div class="home-art" aria-label="一座暮色中的悬崖，两个小人正准备挑战">
+      <div class="art-top-note">AN EXERCISE IN<br>BAD DECISIONS. <span>✦</span></div>
+      <div class="sun-disc"></div><div class="sun-inner"></div>
+      <div class="stars star-one">✦</div><div class="stars star-two">✳</div><div class="stars star-three">✴</div>
+      <div class="cloud cloud-one"></div><div class="cloud cloud-two"></div>
+      <div class="mountain far-one"></div><div class="mountain far-two"></div>
+      <div class="cliff cliff-left"><div class="cliff-hatch"></div></div><div class="cliff cliff-right"><div class="cliff-hatch"></div></div>
+      <div class="tiny-human human-one"><span class="head"></span><span class="body"></span><span class="leg leg1"></span><span class="leg leg2"></span></div>
+      <div class="tiny-human human-two"><span class="head"></span><span class="body"></span><span class="leg leg1"></span><span class="leg leg2"></span></div>
+      <div class="art-bottom-text">CAREFUL.<br><b>IT'S A LONG WAY DOWN.</b></div>
+      <span class="art-serial">EDG. / 2026</span>
+    </div>
+  </main>
+
+  <main id="gameView" class="game-view" hidden>
+    <div class="game-upper"><div class="room-info"><span class="number-label">PRIVATE MATCH / ROOM</span><div class="room-code-line"><span id="roomCode">------</span><button data-act="copy" class="outline-button copy-btn" title="复制邀请链接">复制邀请链接 <span>↗</span></button></div></div><button data-act="leave" class="leave-button">退出房间 ↗</button></div>
+
+    <section id="lobbySection" class="lobby-section" hidden>
+      <div class="mini-eyebrow">THE WAITING ROOM ✳</div>
+      <h2>好戏还没<span class="italic-highlight">开始。</span></h2>
+      <p>两位玩家到齐后，由房主开始比赛。记得把邀请链接发出去。</p>
+      <div class="lobby-slots" id="lobbySlots"></div>
+      <button id="startButton" data-act="start" class="primary-button large" disabled>等待第二位玩家… <span>↗</span></button>
+      <p class="form-note">房间仅限两人 · 刷新页面可自动回到自己的座位</p>
+    </section>
+
+    <section id="playSection" class="play-section" hidden>
+      <div class="stage-heading"><div><div class="mini-eyebrow">DON'T LOOK DOWN <span>✳</span></div><h2>向前一步，<i>还是收手？</i></h2></div><div class="stage-tag"><span>STAGE</span><strong id="stageNumber">01 <small>/ 05</small></strong></div></div>
+      <div class="game-rule-line"><span>每关的安全终点暗藏在 <b>第 5–9 格</b>之间；前 4 格必安全。</span><span class="rule-light">越界 = 本关积分归零</span></div>
+      <div id="playerPanels" class="player-panels"></div>
+      <div id="revealPanel" class="reveal-panel" hidden></div>
+      <section id="actionsSection" class="actions-section"><div class="action-heading"><div><div class="mini-eyebrow">MAKE YOUR MOVE</div><h3 id="actionTitle">这一次，你敢走几步？</h3></div><div class="action-subtext" id="actionTip">双人同时选择，提交后才揭晓。</div></div>
+        <div class="move-grid">
+          <button class="move-card" data-act="choose" data-choice="1"><span class="move-index">01 / SAFE-ish</span><span class="move-visual">➜</span><span class="move-name">走 1 步</span><span class="move-desc">稳着点 +10 分</span></button>
+          <button class="move-card" data-act="choose" data-choice="2"><span class="move-index">02 / BOLDER</span><span class="move-visual double">➜➜</span><span class="move-name">走 2 步</span><span class="move-desc">开始刺激 +20 分</span></button>
+          <button class="move-card" data-act="choose" data-choice="3"><span class="move-index">03 / DANGER</span><span class="move-visual triple">➜➜➜</span><span class="move-name">走 3 步</span><span class="move-desc">命够硬 +30 分</span></button>
+          <button class="move-card cashout" data-act="choose" data-choice="bank"><span class="move-index">04 / WALK AWAY</span><span class="move-visual">✳</span><span class="move-name">收手保分</span><span class="move-desc">把本关累计分数存入总分</span></button>
+        </div>
+        <div class="action-feedback" id="actionFeedback" aria-live="polite">选择前请观察你现在的位置。</div>
+      </section>
+      <section class="activity-section"><div class="activity-head"><span>LIVE FEED <span class="activity-point">●</span></span><span>本场比赛动态</span></div><div class="activity-list" id="activityList"></div></section>
+    </section>
+
+    <section id="finishSection" class="finish-section" hidden>
+      <div class="finish-crown">✳ <span>THE FINAL VERDICT</span> ✳</div>
+      <h2 id="finishTitle">胆小鬼是谁？</h2><p id="finishSubtitle"></p>
+      <div id="finishScores" class="finish-scores"></div>
+      <button class="primary-button large" data-act="rematch" id="rematchButton">再来一局 <span>↗</span></button>
+      <p id="rematchNote" class="form-note">双方都选择再来一局后，自动开始新比赛。</p>
+    </section>
+  </main>
+  <footer class="site-footer"><span>EDGE CLUB <span class="footer-glyph">✳</span> PLAY BRAVE, LOSE GRACEFULLY.</span><span>MADE FOR TWO / EST. 2026</span></footer>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="/app.js" defer></script>
+</body>
+</html>
