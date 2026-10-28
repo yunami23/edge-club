@@ -1,0 +1,11 @@
+{
+  "name": "edge-club",
+  "version": "1.0.0",
+  "description": "A two-player online cliff-edge bluffing game — no database or external packages",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": { "node": ">=20" }
+}
